@@ -1,0 +1,84 @@
+.form {
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 20px;
+  color: #542ebd00;
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.input {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  width: 100%;
+  border: 2px solid rgba(3, 3, 3, 0.767);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: border-color 250ms ease-in-out;
+}
+
+.input:focus {
+  outline-color: #420652;
+  border-color: #f439d2;
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: #f439d2;
+  box-shadow: 0px 4px 4px rgba(249, 43, 214, 0.15);
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  opacity: 0.8;
+  transition: opacity 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  cursor: pointer;
+  color: #020202;
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.btn:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Additional Cool Styles */
+
+.form {
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.label {
+  color: #542ebd;
+  font-family: Arial, sans-serif;
+}
+
+.input {
+  color: #333333;
+  font-family: Arial, sans-serif;
+}
+
+.btn {
+  background-color: #ff6e6e;
+  color: #ffffff;
+}
+
+.btn:hover {
+  background-color: #ff4545;
+}
