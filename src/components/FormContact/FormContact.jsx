@@ -6,7 +6,7 @@ import css from './FormContact.module.css';
 export function FormContacts({ onSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [id, setId] = useState(nanoid());
+  const [setId] = useState(nanoid());
 
   const handleChange = e => {
     const { name, value } = e.target;
