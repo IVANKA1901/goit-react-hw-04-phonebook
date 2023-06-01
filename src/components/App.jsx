@@ -1,51 +1,40 @@
-import { Component } from 'react';
+import React from 'react';
+
+import { useEffect, useState } from 'react';
 import { ListContact } from './ListContact/ListContact';
 import { FormContacts } from './FormContact/FormContact';
 import { Container } from './Container/Container';
 import { nanoid } from 'nanoid';
 import { Filter } from './Filter/Filter';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
-      { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
-      { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
-      { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
+export function App() {
+  const [contacts, setContacts] = useState([
+    { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
+    { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
+    { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
+    { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
+  ]);
 
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
+  const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    const parsedContacts = JSON.parse(window.localStorage.getItem('contacts'));
 
     if (parsedContacts) {
-      this.setState({
-        contacts: parsedContacts,
-      });
+      setContacts(parsedContacts);
     }
-  }
+  }, []);
 
-  componentDidUpdate(prevProps, prevState) {
-    const nextContacts = this.state.contacts;
-    const prevContacts = prevState.contacts;
+  useEffect(() => {
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-    if (nextContacts !== prevContacts) {
-      localStorage.setItem('contacts', JSON.stringify(nextContacts));
-    }
-  }
-
-  deleteContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(el => el.id !== contactId),
-    }));
+  const deleteContact = contactId => {
+    setContacts(prevState => prevState.filter(el => el.id !== contactId));
   };
 
-  addContact = ({ name, number }) => {
-    // console.log(contact);
+  const addContact = ({ name, number }) => {
     const newContact = { name, number, id: nanoid() };
-    const { contacts } = this.state;
 
     if (
       contacts.find(
@@ -58,46 +47,31 @@ export class App extends Component {
     } else if (name.trim() === '' || number.trim === '') {
       alert('Please enter the contact`s name and phone number');
     } else {
-      this.setState(prevState => ({
-        contacts: [...prevState.contacts, newContact],
-      }));
+      setContacts(prevState => [...prevState, newContact]);
     }
   };
 
-  changeFilter = e => {
-    this.setState({
-      filter: e.target.value,
-    });
+  const changeFilter = e => {
+    setFilter(e.target.value);
   };
 
-  showContact = () => {
-    const { contacts, filter } = this.state;
+  const showContact = () => {
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
-  render() {
-    const { filter, contacts } = this.state;
-    const visibleContacts = this.showContact();
-
-    return (
-      <Container>
-        <h1>Phonebook</h1>
-        <FormContacts onSubmit={this.addContact} />
-        <h1>Contacts</h1>
-        {contacts.length > 1 && (
-          <Filter value={filter} onChange={this.changeFilter} />
-        )}
-        {contacts.length > 0 ? (
-          <ListContact
-            contacts={visibleContacts}
-            onDeleteContact={this.deleteContact}
-          />
-        ) : (
-          <p>There is no contacts left. Please add some.</p>
-        )}
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <h1>Phonebook</h1>
+      <FormContacts onSubmit={addContact} />
+      <h1>Contacts</h1>
+      {contacts.length > 1 && <Filter value={filter} onChange={changeFilter} />}
+      {contacts.length > 0 ? (
+        <ListContact contacts={showContact()} onDeleteContact={deleteContact} />
+      ) : (
+        <p>There is no contacts left. Please add some.</p>
+      )}
+    </Container>
+  );
 }
